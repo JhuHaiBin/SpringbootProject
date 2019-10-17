@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mssoft.smt.mapper.StudentScoreInfoMapper">
+  <resultMap id="BaseResultMap" type="com.mssoft.smt.model.StudentScoreInfo">
+    <id column="s_id" jdbcType="INTEGER" property="sId" />
+    <result column="s_number" jdbcType="BIGINT" property="sNumber" />
+    <result column="s_chinese_score" jdbcType="INTEGER" property="sChineseScore" />
+    <result column="s_math_score" jdbcType="INTEGER" property="sMathScore" />
+    <result column="s_english_score" jdbcType="INTEGER" property="sEnglishScore" />
+    <result column="s_class" jdbcType="VARCHAR" property="sClass" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    s_id, s_number, s_chinese_score, s_math_score, s_english_score, s_class
+  </sql>
+  <select id="selectByExample" parameterType="com.mssoft.smt.model.StudentScoreInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from student_score_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from student_score_info
+    where s_id = #{sId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from student_score_info
+    where s_id = #{sId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mssoft.smt.model.StudentScoreInfoExample">
+    delete from student_score_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mssoft.smt.model.StudentScoreInfo">
+    insert into student_score_info (s_id, s_number, s_chinese_score, 
+      s_math_score, s_english_score, s_class
+      )
+    values (#{sId,jdbcType=INTEGER}, #{sNumber,jdbcType=BIGINT}, #{sChineseScore,jdbcType=INTEGER}, 
+      #{sMathScore,jdbcType=INTEGER}, #{sEnglishScore,jdbcType=INTEGER}, #{sClass,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mssoft.smt.model.StudentScoreInfo">
+    insert into student_score_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sId != null">
+        s_id,
+      </if>
+      <if test="sNumber != null">
+        s_number,
+      </if>
+      <if test="sChineseScore != null">
+        s_chinese_score,
+      </if>
+      <if test="sMathScore != null">
+        s_math_score,
+      </if>
+      <if test="sEnglishScore != null">
+        s_english_score,
+      </if>
+      <if test="sClass != null">
+        s_class,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sId != null">
+        #{sId,jdbcType=INTEGER},
+      </if>
+      <if test="sNumber != null">
+        #{sNumber,jdbcType=BIGINT},
+      </if>
+      <if test="sChineseScore != null">
+        #{sChineseScore,jdbcType=INTEGER},
+      </if>
+      <if test="sMathScore != null">
+        #{sMathScore,jdbcType=INTEGER},
+      </if>
+      <if test="sEnglishScore != null">
+        #{sEnglishScore,jdbcType=INTEGER},
+      </if>
+      <if test="sClass != null">
+        #{sClass,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mssoft.smt.model.StudentScoreInfoExample" resultType="java.lang.Long">
+    select count(*) from student_score_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update student_score_info
+    <set>
+      <if test="record.sId != null">
+        s_id = #{record.sId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sNumber != null">
+        s_number = #{record.sNumber,jdbcType=BIGINT},
+      </if>
+      <if test="record.sChineseScore != null">
+        s_chinese_score = #{record.sChineseScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.sMathScore != null">
+        s_math_score = #{record.sMathScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.sEnglishScore != null">
+        s_english_score = #{record.sEnglishScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.sClass != null">
+        s_class = #{record.sClass,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update student_score_info
+    set s_id = #{record.sId,jdbcType=INTEGER},
+      s_number = #{record.sNumber,jdbcType=BIGINT},
+      s_chinese_score = #{record.sChineseScore,jdbcType=INTEGER},
+      s_math_score = #{record.sMathScore,jdbcType=INTEGER},
+      s_english_score = #{record.sEnglishScore,jdbcType=INTEGER},
+      s_class = #{record.sClass,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mssoft.smt.model.StudentScoreInfo">
+    update student_score_info
+    <set>
+      <if test="sNumber != null">
+        s_number = #{sNumber,jdbcType=BIGINT},
+      </if>
+      <if test="sChineseScore != null">
+        s_chinese_score = #{sChineseScore,jdbcType=INTEGER},
+      </if>
+      <if test="sMathScore != null">
+        s_math_score = #{sMathScore,jdbcType=INTEGER},
+      </if>
+      <if test="sEnglishScore != null">
+        s_english_score = #{sEnglishScore,jdbcType=INTEGER},
+      </if>
+      <if test="sClass != null">
+        s_class = #{sClass,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where s_id = #{sId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mssoft.smt.model.StudentScoreInfo">
+    update student_score_info
+    set s_number = #{sNumber,jdbcType=BIGINT},
+      s_chinese_score = #{sChineseScore,jdbcType=INTEGER},
+      s_math_score = #{sMathScore,jdbcType=INTEGER},
+      s_english_score = #{sEnglishScore,jdbcType=INTEGER},
+      s_class = #{sClass,jdbcType=VARCHAR}
+    where s_id = #{sId,jdbcType=INTEGER}
+  </update>
+</mapper>
