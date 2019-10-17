@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>#026 - Double slider Sign in/up Form - Desktop Only</title>
 
-<!--图标样式-->
+<!--图标样式--> 
 <link rel='stylesheet'
 	href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.2/css/all.min.css'>
 
