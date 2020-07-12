@@ -11,8 +11,8 @@ spring:
       pool-name: blah
   mvc:
     view:
-      prefix: /WEB-INF/jsp/
-      suffix: .jsp
+      prefix: /WEB-INF/jsp/ #前缀
+      suffix: .jsp          #后缀
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     show-sql: true

@@ -19,32 +19,33 @@ import com.mssoft.smt.model.StudentScoreInfoExample;
 
 @Controller
 public class MainPageController {
-	//提示用户添加失败--提示失败！！line97
-	//还差分页功能
+	// 还差分页功能
 	@Autowired
 	StudentScoreInfoMapper studentScoreInfoMapper;
-	@RequestMapping("/DeletePage") 
-	public String delete(HttpServletRequest request, HttpSession session,Model model) {
+
+	@RequestMapping("/DeletePage")
+	public String delete(HttpServletRequest request, HttpSession session, Model model) {
 		String sId = request.getParameter("sId");
 		Integer id = new Integer(sId);
 		StudentScoreInfoExample studentScoreInfoExample = new StudentScoreInfoExample();
 		studentScoreInfoExample.createCriteria().andSIdEqualTo(id);
 		studentScoreInfoMapper.deleteByPrimaryKey(id);
-		//继续从数据库读取学生成绩数据，用model带到Main页面中
+		// 继续从数据库读取学生成绩数据，用model带到Main页面中
 		List<StudentScoreInfo> list = getStudentList();
-		model.addAttribute("studentList",list);
+		model.addAttribute("studentList", list);
 		return "Main";
 	}
+
 	/*
 	 * 跳转到Update页面
 	 */
-	@RequestMapping("/UpdatePage") 
-	public String update(HttpServletRequest request, HttpSession session,Model model) {
+	@RequestMapping("/UpdatePage")
+	public String update(HttpServletRequest request, HttpSession session, Model model) {
 		String sNumber = request.getParameter("sNumber");
-		String sChineseScore =request.getParameter("sChineseScore");
-		String sMathScore =request.getParameter("sMathScore");
-		String sEnglishScore =request.getParameter("sEnglishScore");
-		String sClass =request.getParameter("sClass");
+		String sChineseScore = request.getParameter("sChineseScore");
+		String sMathScore = request.getParameter("sMathScore");
+		String sEnglishScore = request.getParameter("sEnglishScore");
+		String sClass = request.getParameter("sClass");
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("sNumber", sNumber);
 		map.put("sChineseScore", sChineseScore);
@@ -53,82 +54,83 @@ public class MainPageController {
 		map.put("sClass", sClass);
 		model.addAllAttributes(map);
 		return "Update";
-		
+
 	}
+
 	@RequestMapping("/UpdateSubmit")
-	public String updateSubmit(HttpServletRequest request, HttpSession session,Model model) {
+	public String updateSubmit(HttpServletRequest request, HttpSession session, Model model) {
 		String sId = request.getParameter("sId");
 		String sNumber = request.getParameter("sNumber");
-		String sChineseScore =request.getParameter("sChineseScore");
-		String sMathScore =request.getParameter("sMathScore");
-		String sEnglishScore =request.getParameter("sEnglishScore");
-		String sClass =request.getParameter("sClass");
+		String sChineseScore = request.getParameter("sChineseScore");
+		String sMathScore = request.getParameter("sMathScore");
+		String sEnglishScore = request.getParameter("sEnglishScore");
+		String sClass = request.getParameter("sClass");
 		Integer id = new Integer(sId);
 		Long number = Long.parseLong(sNumber);
 		Integer chineseScore = new Integer(sChineseScore);
 		Integer mathScore = new Integer(sMathScore);
 		Integer englishScore = new Integer(sEnglishScore);
-		StudentScoreInfo studentScoreInfo = new StudentScoreInfo(id,number,chineseScore,mathScore,englishScore,sClass);
-		//添加进数据库
-		
+		StudentScoreInfo studentScoreInfo = new StudentScoreInfo(id, number, chineseScore, mathScore, englishScore,
+				sClass);
+		// 添加进数据库
+
 		StudentScoreInfoExample studentScoreInfoExample = new StudentScoreInfoExample();
 		studentScoreInfoExample.createCriteria().andSIdEqualTo(id);
 		studentScoreInfoMapper.updateByPrimaryKeySelective(studentScoreInfo);
 		List<StudentScoreInfo> list = getStudentList();
-		model.addAttribute("studentList",list);
+		model.addAttribute("studentList", list);
 		return "Main";
 	}
+
 	@RequestMapping("/AddStudent")
-	public String addSubmit(HttpServletRequest request, HttpSession session,Model model) {
+	public String addSubmit(HttpServletRequest request, HttpSession session, Model model) {
 		String sNumber = request.getParameter("sNumber");
-		String sChineseScore =request.getParameter("sChineseScore");
-		String sMathScore =request.getParameter("sMathScore");
-		String sEnglishScore =request.getParameter("sEnglishScore");
-		String sClass =request.getParameter("sClass");
+		String sChineseScore = request.getParameter("sChineseScore");
+		String sMathScore = request.getParameter("sMathScore");
+		String sEnglishScore = request.getParameter("sEnglishScore");
+		String sClass = request.getParameter("sClass");
 		Long number = Long.parseLong(sNumber);
 		Integer chineseScore = new Integer(sChineseScore);
 		Integer mathScore = new Integer(sMathScore);
 		Integer englishScore = new Integer(sEnglishScore);
-		StudentScoreInfo studentScoreInfo = new StudentScoreInfo(number,chineseScore,mathScore,englishScore,sClass);
-		//第一步，检查学号是否有冲突，若有冲突，提示用户添加失败
+		StudentScoreInfo studentScoreInfo = new StudentScoreInfo(number, chineseScore, mathScore, englishScore, sClass);
 		StudentScoreInfoExample studentScoreInfoExample = new StudentScoreInfoExample();
-		if(null==studentScoreInfoExample.createCriteria().andSNumberEqualTo(number)) {
-			//此处有错误！！无论有没有查到snumber，该对象都不为null！
-			
-			//第二步，添加学生成绩进数据库
-			studentScoreInfoMapper.insert(studentScoreInfo);
-		}else {
-			//提示用户添加失败--提示失败！！
-			request.setAttribute("message", "添加失败，已有相同学号的学生！");
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		studentScoreInfoExample.createCriteria().andSNumberEqualTo(number);
+		List<StudentScoreInfo> list = studentScoreInfoMapper.selectByExample(studentScoreInfoExample);
+		System.out.println(list.size());//list.size()==0
+		if (list.size() > 0) {
+			if (list.get(0).equals(number)) {
+				// 如果匹配，提示失败
+				request.setAttribute("message", "添加失败，已有相同学号的学生！");
 			}
+		} else {
+			// 不匹配，插入数据成功
+			studentScoreInfoMapper.insert(studentScoreInfo);
 		}
-		
-		
-		List<StudentScoreInfo> list = getStudentList();
-		model.addAttribute("studentList",list);
+		List<StudentScoreInfo> list2 = getStudentList();
+		model.addAttribute("studentList",list2);
 		return "Main";
 	}
-	@RequestMapping("/Main") 
+
+	@RequestMapping("/Main")
 	public String Main(Model model) {
 		List<StudentScoreInfo> list = getStudentList();
-		model.addAttribute("studentList",list);
+		model.addAttribute("studentList", list);
 		return "Main";
 	}
-	@RequestMapping("/Add") 
+
+	@RequestMapping("/Add")
 	public String Add(Model model) {
 
 		return "Add";
 	}
-	//获取数据库学生成绩数据
+
+	// 获取数据库学生成绩数据
 	public List<StudentScoreInfo> getStudentList() {
 		StudentScoreInfoExample studentScoreInfoExample = new StudentScoreInfoExample();
 		studentScoreInfoExample.createCriteria().andSIdIsNotNull();
 		List<StudentScoreInfo> list = studentScoreInfoMapper.selectByExample(studentScoreInfoExample);
 		return list;
-		
+
 	}
 }

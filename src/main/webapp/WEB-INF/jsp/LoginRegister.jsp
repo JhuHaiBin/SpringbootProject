@@ -5,7 +5,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>#026 - Double slider Sign in/up Form - Desktop Only</title>
+<title>Welcome!</title>
 
 <!--图标样式--> 
 <link rel='stylesheet'
@@ -18,7 +18,7 @@
 
 <body>
 
-	<h2>简单的两个 #1: 登录/注册 表单</h2>
+	<h2>登录/注册</h2>
 	<div class="container" id="container">
 		<div class="form-container sign-up-container">
 			<form action="/registerPage" method="post">

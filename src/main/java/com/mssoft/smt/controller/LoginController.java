@@ -1,5 +1,6 @@
 package com.mssoft.smt.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,5 +79,23 @@ public class LoginController{
 	@RequestMapping("/login")
 	public String login() {
 		return "LoginRegister";
+	}
+	@RequestMapping("/index")
+	public String test() {
+		return "index";
+	}
+	@RequestMapping("/agent_list")
+	public String test2(Model model) {
+		List<StudentScoreInfo> list = getStudentList();
+		model.addAttribute("studentList", list);
+		return "agent_list";
+	}
+	// 获取数据库学生成绩数据
+	public List<StudentScoreInfo> getStudentList() {
+		StudentScoreInfoExample studentScoreInfoExample = new StudentScoreInfoExample();
+		studentScoreInfoExample.createCriteria().andSIdIsNotNull();
+		List<StudentScoreInfo> list = studentScoreInfoMapper.selectByExample(studentScoreInfoExample);
+		return list;
+
 	}
 }
