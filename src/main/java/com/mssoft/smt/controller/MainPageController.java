@@ -19,7 +19,6 @@ import com.mssoft.smt.model.StudentScoreInfoExample;
 
 @Controller
 public class MainPageController {
-	//提示用户添加失败--提示失败！！line97
 	//还差分页功能
 	@Autowired
 	StudentScoreInfoMapper studentScoreInfoMapper;
